@@ -40,7 +40,7 @@ const userSchema = new Schema({
   role: { 
     type: String, 
     required: true, 
-    default: 'utilisateur'
+    default: 'rien'
   },
   cin: { 
     type: String, 
@@ -71,7 +71,7 @@ const userSchema = new Schema({
   forgetPasswordCode: { type: String, select: false },
   license: [{
     type: Schema.Types.ObjectId,
-    ref: "license",
+    ref: "Licence",
     default: [],
 }], 
 });
