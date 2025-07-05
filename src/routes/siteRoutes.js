@@ -8,6 +8,8 @@ router.post('/site', siteController.creerSite);
 // Obtenir tous les sites
 router.get('/allsite', siteController.listerSites);
 
+router.get('/allsite', siteController.listerSites);
+router.get('/total-sites-count',siteController.getTotalSitesCount);
 // Obtenir un site par ID
 router.get('/site/:id', siteController.getSiteParId);
 

@@ -5,6 +5,8 @@ const ligneController = require('../controlles/ligneControlles');
 router.get('/generate-code', ligneController.generateUniqueLigneCode);
 router.post('/', ligneController.creerLigne);
 router.get('/', ligneController.listerLignes);
+router.get('/count', ligneController.getTotalLignesCount);
+
 router.get('/:id', ligneController.getLigneParId);
 router.get('/code/:code', ligneController.getLigneParCode);
 router.put('/:id', ligneController.updateLigne);

@@ -293,3 +293,14 @@ exports.getHistoriqueTriphase = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getTotalLignesCount = async (req, res) => {
+  try {
+    const count = await Ligne.countDocuments();
+    console.log('Nombre total de lignes :', count);
+    res.status(200).json({ success: true, count });
+  } catch (error) {
+    console.error('Erreur lors du calcul du nombre total de lignes :', error);
+    res.status(500).json({ message: error.message });
+  }
+};

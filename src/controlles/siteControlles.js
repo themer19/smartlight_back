@@ -53,3 +53,21 @@ exports.supprimerSite = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getTotalSitesCount = async (req, res) => {
+  try {
+    const totalSitesCount = await Site.countDocuments();
+    console.log('Nombre total de sites :', totalSitesCount);
+    res.status(200).json({
+      success: true,
+      count: totalSitesCount,
+    });
+  } catch (error) {
+    console.error('Erreur lors du calcul du nombre total de sites :', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur serveur lors du calcul du nombre total de sites',
+      error: error.message,
+    });
+  }
+};

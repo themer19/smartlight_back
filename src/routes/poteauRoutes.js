@@ -15,11 +15,13 @@ const {
   importerPoteauxCSV,
   dupliquerPoteau,
   getPoteauxForMap,
+  getPoteauxCountByLigne
 } = require('../controlles/poteauControlles');
 
 router.get('/generate-code', generateUniquePoteauCode);
 router.post('/', creerPoteau);
 router.get('/', listerPoteaux);
+router.get('/ligne/:ligneId/count', getPoteauxCountByLigne);
 router.get('/map', getPoteauxForMap);
 router.get('/:id', getPoteauParId);
 router.get('/code/:code', getPoteauParCode);

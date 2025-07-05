@@ -281,3 +281,16 @@ exports.getPoteauxForMap = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+exports.getPoteauxCountByLigne = async (req, res) => {
+  try {
+    const { ligneId } = req.params;
+    if (!ligneId) {
+      return res.status(400).json({ message: 'Ligne ID est requis' });
+    }
+    const count = await Poteau.countDocuments({ ligne: ligneId });
+    res.status(200).json({ ligneId, count });
+  } catch (error) {
+    console.error('Erreur lors du comptage des poteaux pour la ligne:', error);
+    res.status(500).json({ message: 'Erreur serveur lors du comptage des poteaux' });
+  }
+};

@@ -6,12 +6,13 @@ const authController = require("../nodemail");
 router.post("/ajoute", userController.ajoute);
 router.post("/login", userController.login);
 router.get("/alluser", userController.getAllUsers);
-
+router.get('/active-users-count', userController.getActiveUsersCount);
+router.get("/validate-token",userController.validateToken)
 router.get("/:id", userController.getUserById);
 router.put("/:id", userController.updateUser);
 router.delete("/:id", userController.deleteUser);
 router.post("/VerifierExistence",userController.VerifierExistence);
-
+router.put('/:id/password', userController.updatePassword);
 router.post("/ForgotPassword",authController.ForgotPassword);
 router.post("/ResetPassword",authController.ResetPassword);
 router.post("/VerifierEmail",authController.VerifierEmail);

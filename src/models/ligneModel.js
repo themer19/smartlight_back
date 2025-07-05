@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 const LigneSchema = new Schema({
     nom_L: {
         type: String,
-        required: true,
     },
     description: {
         type: String,
@@ -20,6 +19,10 @@ const LigneSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Site",
         required: true,
+    },
+    users: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
     },
     users: {
         type: Schema.Types.ObjectId,

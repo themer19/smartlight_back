@@ -17,12 +17,11 @@ const poteauSchema = new mongoose.Schema({
   site: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Site',
-    required: [true, 'Le site associé est requis'],
+    
   },
   ligne: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ligne',
-    required: [true, 'La ligne associée est requise'],
   },
   niveauLumiere: {
     type: Number,

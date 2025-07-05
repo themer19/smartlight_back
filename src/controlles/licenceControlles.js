@@ -131,10 +131,39 @@ exports.deleteLicence = async (req, res) => {
 
 exports.getLicencesByUser = async (req, res) => {
   try {
-    const licences = await Licence.find({ responsable: req.params.userId });
-    res.json(licences);
+    // Validate userId
+    if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'ID utilisateur invalide',
+      });
+    }
+
+    // Fetch licenses, excluding soft-deleted ones by default
+    const licences = await Licence.find({ utilisateurId: req.params.userId })
+      .populate('utilisateurId', 'nom prenom email') // Populate user details
+      .populate('deletionInfo.deletedBy', 'nom prenom email') // Populate deletedBy user
+      .lean(); // Optimize performance
+
+    if (!licences || licences.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Aucune licence trouvée pour cet utilisateur',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      count: licences.length,
+      data: licences,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error('Erreur lors de la récupération des licences:', err);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur serveur lors de la récupération des licences',
+      error: err.message,
+    });
   }
 };
 
@@ -447,6 +476,32 @@ exports.reactivateLicence = async (req, res) => {
     console.error('Erreur lors de la réactivation de la licence:', err);
     res.status(500).json({
       message: 'Erreur lors de la réactivation de la licence',
+      error: err.message,
+    });
+  }
+};
+
+
+// Route pour récupérer le nombre de licences actives
+exports.getActiveLicensesCount = async (req, res) => {
+  try {
+    const currentDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
+    console.log('Date actuelle (CET) :', currentDate.toISOString());
+    const activeLicensesCount = await Licence.countDocuments({
+      statut: 'Active',
+      deleted: false,
+      dateExpiration: { $gt: currentDate },
+    });
+    console.log('Nombre de licences actives :', activeLicensesCount);
+    res.status(200).json({
+      success: true,
+      count: activeLicensesCount,
+    });
+  } catch (err) {
+    console.error('Erreur lors du calcul des licences actives :', err);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur serveur lors du calcul des licences actives',
       error: err.message,
     });
   }
